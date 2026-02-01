@@ -18,9 +18,9 @@ namespace backend.Controller
         [HttpPost("register")]
         public async Task<IActionResult> RegisterMember([FromBody] RegisterRequest request)
         {
-            var registermemebr =   _member.Register(request);
+            await   _member.Register(request);
             await _emailService.SendWelcomeMail(request.Email);
-            return Ok(registermemebr);
+            return Ok();
         }
         [HttpPost("login")]
         public IActionResult Login([FromBody] LoginRequest request) {
