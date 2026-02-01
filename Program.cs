@@ -2,6 +2,7 @@ using backend.Data;
 using backend.Services;
 using backend.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Resend;
 using System;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,6 +25,11 @@ static string ConvertPostgresUrl(string databaseUrl)
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 builder.Services.AddScoped<Imember,MemberService>();
+builder.Services.AddOptions();
+builder.Services.AddHttpClient<IResend,ResendClient>();
+builder.Services.Configure<ResendClientOptions>(options =>
+   { options.ApiToken = builder.Configuration["RESEND_API_KEY"];  });
+builder.Services.AddTransient<IEmailService, EmailService>();
 //builder.Services.AddDbContext<GymDbContext>(options =>
 // options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 //builder.Services.AddDbContext<GymDbContext>(options =>

@@ -9,14 +9,17 @@ namespace backend.Controller
     public class MemberController : ControllerBase
     {
         private readonly Imember _member;
-        public MemberController(Imember member)
+        private readonly IEmailService _emailService;
+        public MemberController(Imember member, IEmailService emailService)
         {
             _member = member;
+            _emailService = emailService;
         }
         [HttpPost("register")]
-        public  IActionResult RegisterMember([FromBody] RegisterRequest request)
+        public async Task<IActionResult> RegisterMember([FromBody] RegisterRequest request)
         {
-            var registermemebr =  _member.Register(request);
+            var registermemebr =   _member.Register(request);
+            await _emailService.SendWelcomeMail(request.Email);
             return Ok(registermemebr);
         }
         [HttpPost("login")]
