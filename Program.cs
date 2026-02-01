@@ -91,6 +91,20 @@ app.MapGet("/weatherforecast", () =>
 })
 .WithName("GetWeatherForecast");
 app.MapControllers();
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var context = services.GetRequiredService<GymDbContext>();
+        context.Database.Migrate();
+        Console.WriteLine("Database migration applied successfully.");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"An error occurred while migrating the database: {ex.Message}");
+    }
+}
 app.Run();
 
 record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
