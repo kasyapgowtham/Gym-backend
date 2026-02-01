@@ -14,9 +14,16 @@ builder.Services.AddControllers();
 builder.Services.AddScoped<Imember,MemberService>();
 //builder.Services.AddDbContext<GymDbContext>(options =>
 // options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+//builder.Services.AddDbContext<GymDbContext>(options =>
+//    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
+//);
 builder.Services.AddDbContext<GymDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
-);
+{
+    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+        ?? builder.Configuration["DATABASE_URL"];
+
+    options.UseNpgsql(connectionString);
+});
 
 builder.Services.AddCors(options=>
     options.AddPolicy("allowreact",
