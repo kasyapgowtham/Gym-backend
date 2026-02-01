@@ -28,7 +28,7 @@ builder.Services.AddScoped<Imember,MemberService>();
 builder.Services.AddOptions();
 builder.Services.AddHttpClient<IResend,ResendClient>();
 builder.Services.Configure<ResendClientOptions>(options =>
-   { options.ApiToken = builder.Configuration["RESEND_API_KEY"];  });
+   { options.ApiToken = builder.Configuration["RESEND_API_KEY"]!;  });
 builder.Services.AddTransient<IEmailService, EmailService>();
 //builder.Services.AddDbContext<GymDbContext>(options =>
 // options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));

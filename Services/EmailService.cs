@@ -12,7 +12,7 @@ namespace backend.Services
         {
             var message = new EmailMessage
             {
-                From = "gowthamghantasala123@gmail.com", // Use your verified domain later
+                From = "onboarding@resend.dev", // Use your verified domain later
                 To = email,
                 Subject = "Registration Successful!",
                 HtmlBody = "<strong>Welcome! Your registration is complete.</strong>"
