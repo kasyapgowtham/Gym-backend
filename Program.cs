@@ -5,6 +5,18 @@ using Microsoft.EntityFrameworkCore;
 using System;
 
 var builder = WebApplication.CreateBuilder(args);
+static string ConvertPostgresUrl(string databaseUrl)
+{
+    var uri = new Uri(databaseUrl);
+    var userInfo = uri.UserInfo.Split(':');
+
+    return $"Host={uri.Host};" +
+           $"Port={uri.Port};" +
+           $"Database={uri.AbsolutePath.TrimStart('/')};" +
+           $"Username={userInfo[0]};" +
+           $"Password={userInfo[1]};" +
+           $"Ssl Mode=Require;Trust Server Certificate=true";
+}
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -17,13 +29,28 @@ builder.Services.AddScoped<Imember,MemberService>();
 //builder.Services.AddDbContext<GymDbContext>(options =>
 //    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
 //);
+//builder.Services.AddDbContext<GymDbContext>(options =>
+//{
+//    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+//        ?? builder.Configuration["DATABASE_URL"];
+
+//    options.UseNpgsql(connectionString);
+//});
+
 builder.Services.AddDbContext<GymDbContext>(options =>
 {
-    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+    var connectionString =
+        builder.Configuration.GetConnectionString("DefaultConnection")
         ?? builder.Configuration["DATABASE_URL"];
+
+    if (connectionString != null && connectionString.StartsWith("postgres"))
+    {
+        connectionString = ConvertPostgresUrl(connectionString);
+    }
 
     options.UseNpgsql(connectionString);
 });
+
 
 builder.Services.AddCors(options=>
     options.AddPolicy("allowreact",
