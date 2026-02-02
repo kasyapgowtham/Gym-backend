@@ -19,7 +19,7 @@ namespace backend.Controller
         public async Task<IActionResult> RegisterMember([FromBody] RegisterRequest request)
         {
             await   _member.Register(request);
-            await _emailService.SendWelcomeMail(request.Email);
+           // await _emailService.SendWelcomeMail(request.Email);
             return Ok();
         }
         [HttpPost("login")]

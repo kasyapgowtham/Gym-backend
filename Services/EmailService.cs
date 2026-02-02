@@ -1,24 +1,24 @@
-﻿using backend.Services.Interfaces;
-using Resend;
+﻿//using backend.Services.Interfaces;
+//using Resend;
 
-namespace backend.Services
-{
-    public class EmailService : IEmailService
-    {
-        private readonly IResend _resend;
-        public EmailService(IResend resend) => _resend = resend;
+//namespace backend.Services
+//{
+//    public class EmailService : IEmailService
+//    {
+//        private readonly IResend _resend;
+//        public EmailService(IResend resend) => _resend = resend;
 
-        public async Task SendWelcomeMail(string email)
-        {
-            var message = new EmailMessage
-            {
-                From = "onboarding@resend.dev", // Use your verified domain later
-                To = email,
-                Subject = "Registration Successful!",
-                HtmlBody = "<strong>Welcome! Your registration is complete.</strong>"
-            };
+//        public async Task SendWelcomeMail(string email)
+//        {
+//            var message = new EmailMessage
+//            {
+//                From = "onboarding@resend.dev", // Use your verified domain later
+//                To = email,
+//                Subject = "Registration Successful!",
+//                HtmlBody = "<strong>Welcome! Your registration is complete.</strong>"
+//            };
 
-            await _resend.EmailSendAsync(message);
-        }
-    }
-}
+//            await _resend.EmailSendAsync(message);
+//        }
+//    }
+//}
